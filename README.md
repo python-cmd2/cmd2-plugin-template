@@ -28,6 +28,15 @@ accomplish this objective.
 - [AppVeyor](https://www.appveyor.com/) and [TravisCI](https://travis-ci.com)
   run the tests on the various supported platforms
 
+This plugin template is all set up to use the same strategy.
+
+### Running unit tests
+
+Run `pytest` from the top level directory of your plugin to run all the unit tests.
+
+### Use tox to run unit tests in multiple versions of python
+
+
 AppVeyor and TravisCI offer free plans for open source projects.
 
 

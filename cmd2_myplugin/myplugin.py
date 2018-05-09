@@ -1,20 +1,22 @@
 #
-# -*- coding: utf-8 -*-
+# coding=utf-8
+
+import sys
 
 import functools
 from typing import Callable
 
-def myplugin_decorator(func: Callable) -> Callable:
+def empty_decorator(func: Callable) -> Callable:
     """An empty decorator for myplugin"""
-    #@functools.wraps(func)
-    def _myplugin_decorator(self, *args, **kwargs):
-        self.poutput("in the myplugin decorator")
+    @functools.wraps(func)
+    def _empty_decorator(self, *args, **kwargs):
+        self.poutput("in the empty decorator")
         func(self, *args, **kwargs)
-    _myplugin_decorator.__doc__ = func.__doc__
-    return _myplugin_decorator
+    _empty_decorator.__doc__ = func.__doc__
+    return _empty_decorator
 
-class MypluginMixin:
-    """A mixin class which adds methods to a cmd2 subclass"""
-    def do_myplugin(self, arg):
-        """Add a myplugin command to cmd2"""
-        self.poutput("just ran my plugin command")
+class SayMixin:
+    """A mixin class which adds a 'say' command to a cmd2 subclass"""
+    def do_say(self, arg):
+        """Simple say command"""
+        self.poutput("just ran the say command from a plugin")

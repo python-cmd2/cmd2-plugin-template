@@ -1,15 +1,15 @@
 #
-# -*- coding: utf-8 -*-
+# coding=utf-8
 
-import cmd2
+from cmd2 import cmd2
 import cmd2_myplugin
 
-class PluginExample(cmd2.cmd2.Cmd, cmd2_myplugin.MypluginMixin):
+class PluginExample(cmd2.Cmd, cmd2_myplugin.SayMixin):
     """An class to show how to use a plugin"""
-    def __init__(self):
-        super().__init__()
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
-    @cmd2_myplugin.myplugin_decorator
+    @cmd2_myplugin.empty_decorator
     def do_something(self, arg):
         self.poutput(arg)
 
