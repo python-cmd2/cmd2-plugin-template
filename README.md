@@ -9,6 +9,7 @@ in this template to your own package name. Don't forget to modify the imports an
 You'll probably also want to rewrite the README :)
 
 ## Naming
+
 You should prefix the name of your project with `cmd2-`. Within that project, you should have a package with a prefix of `cmd2_`.
 
 ## License
@@ -16,7 +17,7 @@ You should prefix the name of your project with `cmd2-`. Within that project, yo
 Cmd2 uses the very liberal MIT license. We invite plugin authors to
 consider doing the same.
 
-## Tests
+## Testing
 
 Make sure you test on all versions of python supported by `cmd2`, and on
 all supported platforms. `cmd2` uses a three tiered testing strategy to
@@ -36,6 +37,29 @@ Run `pytest` from the top level directory of your plugin to run all the unit tes
 
 ### Use tox to run unit tests in multiple versions of python
 
+The included `tox.ini` is setup to run the unit tests in python 3.4, 3.5,
+and 3.6. In order for tox to work, you need to have different versions of
+python executables available in your path.
+[pyenv](https://github.com/pyenv/pyenv) is one method of doing this easily.
+Once installed, use pyenv to create multiple versions of python:
+
+```
+$ pyenv install 3.4.8
+$ pyenv install 3.5.5
+$ pyenv install 3.6.5
+$ pyenv local 3.6.5 3.5.5 3.4.8
+```
+
+This will create a `.python-version` file and instruct the `pyenv` shims
+to make `python3.6`, `python3.5`, and `python3.4` launch the appropriate
+versions of python.
+
+Once these executables are configured, invoking `tox` will create a
+virtual environment for each version of python, install the prerequisite
+packages, and run your unit tests.
+
+
+### Run unit tests on multiple platforms
 
 AppVeyor and TravisCI offer free plans for open source projects.
 
