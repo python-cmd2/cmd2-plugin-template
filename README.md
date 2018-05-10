@@ -33,15 +33,16 @@ This plugin template is all set up to use the same strategy.
 
 ### Running unit tests
 
-Run `pytest` from the top level directory of your plugin to run all the unit tests.
+Run `pytest` from the top level directory of your plugin to run all the
+unit tests.
 
 ### Use tox to run unit tests in multiple versions of python
 
 The included `tox.ini` is setup to run the unit tests in python 3.4, 3.5,
-and 3.6. In order for tox to work, you need to have different versions of
+and 3.6. In order for `tox` to work, you need to have different versions of
 python executables available in your path.
 [pyenv](https://github.com/pyenv/pyenv) is one method of doing this easily.
-Once installed, use pyenv to create multiple versions of python:
+Once `pyenv` is installed, use it to install multiple versions of python:
 
 ```
 $ pyenv install 3.4.8
@@ -66,8 +67,9 @@ AppVeyor and TravisCI offer free plans for open source projects.
 
 ## Examples
 
-Include an example or two in the `examples` directory that shows a developer how your plugin
-works, and how to utilize it from within their application.
+Include an example or two in the `examples` directory that shows a
+developer how your plugin works, and how to utilize it from within their
+application.
 
 
 ## Distribution and Packaging
