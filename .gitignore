@@ -1,3 +1,20 @@
+# pyenv et all
+.python-version
+.env
+.venv
+venv/
+ENV/
+
+# editor/ide stuff
+*~
+.tm_properties
+.idea
+.vscode
+.mr.developer.cfg
+.project
+.pydevproject
+tags
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -48,17 +65,6 @@ coverage.xml
 
 # Sphinx documentation
 docs/_build/
-
-# pyenv
-.python-version
-
-# dotenv
-.env
-
-# virtualenv
-.venv
-venv/
-ENV/
 
 # Rope project settings
 .ropeproject
