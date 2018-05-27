@@ -5,4 +5,4 @@
 An overview of what myplugin does.
 """
 
-from .myplugin import empty_decorator, SayMixin
+from .myplugin import empty_decorator, MyPlugin
