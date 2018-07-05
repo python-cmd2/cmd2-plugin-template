@@ -63,7 +63,7 @@ functionality around their `cmd2` commands.
 
 Your plugin can also provide classes and functions which can be used by
 developers of `cmd2` based applications. Describe these classes and functions in
-your documentation and
+your documentation so users of your plugin will know what's available.
 
 
 
@@ -100,10 +100,10 @@ class MyPlugin:
         self.register_preloop_hook(self.preloop_hook)
         self.register_postloop_hook(self.postloop_hook)
 
-    def preloop_hook(self):
+    def preloop_hook(self) -> None:
         self.poutput("preloop hook")
 
-    def postloop_hook(self):
+    def postloop_hook(self) -> None:
         self.poutput("postloop hook")
 ```
 
@@ -139,11 +139,11 @@ Here's the sequence of events (from `cmd2.Cmd.onecmd_plus_hooks`)
 5. redirect output, if user asked for it and it's allowed
 6. start command timer
 7. call functions registered with `register_precmd_hook()`
-8. call `precmd()` - for backwards compatibility deprecated
+8. call `precmd()` - for backwards compatibility
 9. add item to history
 10. call `do_command` method
 11. call functions registered with `register_postcmd_hook()`
-12. call `postcmd()` - for backwards compatibility deprecated
+12. call `postcmd()` - for backwards compatibility
 13. stop timer
 14. stop redirecting output, if it was redirected
 15. call functions registered with `register_cmdcompleted_hook()`
@@ -229,6 +229,6 @@ application.
 When creating your `setup.py` file, keep the following in mind:
 
 - use the keywords `cmd2 plugin` to make it easier for people to find your plugin
-- since `cmd2` uses semantic versioning, you should use something like `install_requires=['cmd2 >= 0.9.0, <=2']` to make sure that your plugin doesn't try and run with a future version of `cmd2` with which it may not be compatible
+- since `cmd2` uses semantic versioning, you should use something like `install_requires=['cmd2 >= 0.9.3, <=2']` to make sure that your plugin doesn't try and run with a future version of `cmd2` with which it may not be compatible
 
 

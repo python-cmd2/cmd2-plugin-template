@@ -6,6 +6,8 @@ import sys
 import functools
 from typing import Callable
 
+import cmd2
+
 def empty_decorator(func: Callable) -> Callable:
     """An empty decorator for myplugin"""
     @functools.wraps(func)
@@ -42,15 +44,15 @@ class MyPlugin:
 
     #
     # define hooks as functions, not methods
-    def preloop_hook(self):
+    def preloop_hook(self) -> None:
         """Method to be called before the command loop begins"""
         self.poutput("preloop hook")
 
-    def postloop_hook(self):
+    def postloop_hook(self) -> None:
         """Method to be called after the command loop finishes"""
         self.poutput("postloop hook")
 
-    def postparsing_hook(self, statement):
+    def postparsing_hook(self, data: cmd2.plugin.PostparsingData) -> cmd2.plugin.PostparsingData:
         """Method to be called after parsing user input, but before running the command"""
         self.poutput('in postparsing_hook')
-        return False, statement
+        return data
