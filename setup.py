@@ -27,7 +27,7 @@ setuptools.setup(
     packages=['cmd2_myplugin'],
 
     python_requires='>=3.4',
-    install_requires=['cmd2 >= 0.9.0, <=2'],
+    install_requires=['cmd2 >= 0.9.3, <=2'],
 
     classifiers=[
         'Development Status :: 4 - Beta',
@@ -39,6 +39,7 @@ setuptools.setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
     ],
 
     # dependencies for development and testing
