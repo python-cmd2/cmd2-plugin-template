@@ -34,9 +34,9 @@ class MyPlugin:
         super().__init__(*args, **kwargs)
         # code placed here runs after cmd2 initializes
         # this is where you register any hook functions
-        self.register_preloop_hook(self.preloop_hook)
-        self.register_postloop_hook(self.postloop_hook)
-        self.register_postparsing_hook(self.postparsing_hook)
+        self.register_preloop_hook(self.cmd2_myplugin_preloop_hook)
+        self.register_postloop_hook(self.cmd2_myplugin_postloop_hook)
+        self.register_postparsing_hook(self.cmd2_myplugin_postparsing_hook)
 
     def do_say(self, statement):
         """Simple say command"""
@@ -44,15 +44,15 @@ class MyPlugin:
 
     #
     # define hooks as functions, not methods
-    def preloop_hook(self) -> None:
+    def cmd2_myplugin_preloop_hook(self) -> None:
         """Method to be called before the command loop begins"""
         self.poutput("preloop hook")
 
-    def postloop_hook(self) -> None:
+    def cmd2_myplugin_postloop_hook(self) -> None:
         """Method to be called after the command loop finishes"""
         self.poutput("postloop hook")
 
-    def postparsing_hook(self, data: cmd2.plugin.PostparsingData) -> cmd2.plugin.PostparsingData:
+    def cmd2_myplugin_postparsing_hook(self, data: cmd2.plugin.PostparsingData) -> cmd2.plugin.PostparsingData:
         """Method to be called after parsing user input, but before running the command"""
         self.poutput('in postparsing_hook')
         return data

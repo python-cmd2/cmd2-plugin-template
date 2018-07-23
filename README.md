@@ -133,6 +133,11 @@ any of the deprecated hook methods, instead they should register their hooks as
 [described](https://cmd2.readthedocs.io/en/latest/hooks.html) in the cmd2
 documentation.
 
+You should name your hooks so that they begin with the name of your plugin. Hook
+methods get mixed into the `cmd2` application and this naming convention helps
+avoid unintentional method overriding.
+
+
 Here's a simple example:
 
 ```python
@@ -143,9 +148,9 @@ class MyPlugin:
         super().__init__(*args, **kwargs)
         # code placed here runs after cmd2 initializes
         # this is where you register any hook functions
-        self.register_postparsing_hook(self.postparsing_hook)
+        self.register_postparsing_hook(self.cmd2_myplugin_postparsing_hook)
 
-    def postparsing_hook(self, data: cmd2.plugin.PostparsingData) -> cmd2.plugin.PostparsingData:
+    def cmd2_myplugin_postparsing_hook(self, data: cmd2.plugin.PostparsingData) -> cmd2.plugin.PostparsingData:
         """Method to be called after parsing user input, but before running the command"""
         self.poutput('in postparsing_hook')
         return data
