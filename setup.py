@@ -28,7 +28,7 @@ setuptools.setup(
 
     python_requires='>=3.4',
     install_requires=['cmd2 >= 0.9.4, <=2'],
-    setup_requires=['setuptools_scm']
+    setup_requires=['setuptools_scm'],
 
     classifiers=[
         'Development Status :: 4 - Beta',
