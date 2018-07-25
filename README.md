@@ -5,8 +5,8 @@
 - [Using this template](#using-this-template)
 - [Naming](#naming)
 - [Adding functionality](#adding-functionality)
-- [Testing](#testing)
 - [Examples](#examples)
+- [Development Tasks](#development-tasks)
 - [Packaging and Distribution](#packaging-and-distribution)
 - [License](#license)
 
@@ -68,7 +68,7 @@ class Example(cmd2_myplugin.MyPlugin, cmd2.Cmd):
 Note how the plugin must be inherited (or mixed in) before `cmd2.Cmd`. This is
 required for two reasons:
 
-- As of python 3.6.5, the `cmd.Cmd.__init__()` method in the python standard library does not call
+- The `cmd.Cmd.__init__()` method in the python standard library does not call
   `super().__init__()`. Because of this oversight, if you don't inherit from `MyPlugin` first, the
   `MyPlugin.__init__()` method will never be called.
 - You may want your plugin to be able to override methods from `cmd2.Cmd`.
@@ -171,11 +171,41 @@ developers of cmd2 based applications. Describe these classes and functions in
 your documentation so users of your plugin will know what's available.
 
 
-## Testing
+## Examples
 
-Make sure you test on all versions of python supported by cmd2, and on
-all supported platforms. cmd2 uses a three tiered testing strategy to
-accomplish this objective.
+Include an example or two in the `examples` directory which demonstrate how your
+plugin works. This will help developers utilize it from within their
+application.
+
+
+## Development Tasks
+
+This project uses many other python modules for various development tasks,
+including testing, linting, building wheels, and distributing releases. These
+modules can be configured many different ways, which can make it difficult to
+learn the specific incantations required for each project you are familiar with.
+
+This project uses [invoke](<http://www.pyinvoke.org>) to provide a clean,
+high level interface for these development tasks. To see the full list of
+functions available:
+```
+$ invoke -l
+```
+
+You can run multiple tasks in a single invocation, for example:
+```
+$ invoke clean docs sdist wheel
+```
+
+That one command will remove all superflous cache, testing, and build
+files, render the documentation, and build a source distribution and a
+wheel distribution.
+
+For more information, read `tasks.py`.
+
+While developing your plugin, you should make sure you support all versions of
+python supported by cmd2, and all supported platforms. cmd2 uses a three
+tiered testing strategy to accomplish this objective.
 
 - [pytest](https://pytest.org) runs the unit tests
 - [tox](https://tox.readthedocs.io/) runs the unit tests on multiple versions
@@ -186,47 +216,100 @@ accomplish this objective.
 This plugin template is set up to use the same strategy.
 
 
+### Create python environments
+
+This project uses [tox](https://tox.readthedocs.io/en/latest/) to run the test
+suite against multiple python versions. I recommend
+[pyenv](https://github.com/pyenv/pyenv) with the
+[pyenv-virtualenv](https://github.com/pyenv/pyenv-virtualenv>) plugin to manage
+these various versions. If you are a Windows user, `pyenv` won't work for you,
+but [conda](https://conda.io/) can also be used to solve this problem.
+
+This distribution includes a shell script `build-pyenvs.sh` which
+automates the creation of these environments.
+
+If you prefer to create these virtualenvs by hand, do the following:
+```
+$ cd cmd2_abbrev
+$ pyenv install 3.7.0
+$ pyenv virtualenv -p python3.7 3.7.0 cmd2-3.7
+$ pyenv install 3.6.5
+$ pyenv virtualenv -p python3.6 3.6.5 cmd2-3.6
+$ pyenv install 3.5.5
+$ pyenv virtualenv -p python3.5 3.5.5 cmd2-3.5
+$ pyenv install 3.4.8
+$ pyenv virtualenv -p python3.4 3.4.8 cmd2-3.4
+```
+
+Now set pyenv to make all three of those available at the same time:
+```
+$ pyenv local cmd2-3.7 cmd2-3.6 cmd2-3.5 cmd2-3.4
+```
+
+Whether you ran the script, or did it by hand, you now have isolated virtualenvs
+for each of the major python versions. This table shows various python commands,
+the version of python which will be executed, and the virtualenv it will
+utilize.
+
+| Command     | python | virtualenv |
+| ----------- | ------ | ---------- |
+| `python`    | 3.7.0  | cmd2-3.6   |
+| `python3`   | 3.7.0  | cmd2-3.6   |
+| `python3.7` | 3.7.0  | cmd2-3.7   |
+| `python3.6` | 3.6.5  | cmd2-3.6   |
+| `python3.5` | 3.5.5  | cmd2-3.5   |
+| `python3.4` | 3.4.8  | cmd2-3.4   |
+| `pip`       | 3.7.0  | cmd2-3.6   |
+| `pip3`      | 3.7.0  | cmd2-3.6   |
+| `pip3.7`    | 3.7.0  | cmd2-3.7   |
+| `pip3.6`    | 3.6.5  | cmd2-3.6   |
+| `pip3.5`    | 3.5.5  | cmd2-3.5   |
+| `pip3.4`    | 3.4.8  | cmd2-3.4   |
+
+## Install Dependencies
+
+Install all the development dependencies:
+```
+$ pip install -e .[dev]
+```
+
+This command also installs `cmd2-myplugin` "in-place", so the package points to
+the source code instead of copying files to the python `site-packages` folder.
+
+All the dependencies now have been installed in the `cmd2-3.7`
+virtualenv. If you want to work in other virtualenvs, you'll need to manually
+select it, and install again::
+
+   $ pyenv shell cmd2-3.4
+   $ pip install -e .[dev]
+
+Now that you have your python environments created, you need to install the
+package in place, along with all the other development dependencies:
+```
+$ pip install -e .[dev]
+```
+
+
 ### Running unit tests
 
-Run `pytest` from the top level directory of your plugin to run all the
-unit tests.
+Run `invoke pytest` from the top level directory of your plugin to run all the
+unit tests found in the `tests` directory.
 
 
 ### Use tox to run unit tests in multiple versions of python
 
 The included `tox.ini` is setup to run the unit tests in python 3.4, 3.5, 3.6,
-and 3.7. In order for `tox` to work, you need to have different versions of
-python executables available in your path.
-[pyenv](https://github.com/pyenv/pyenv) is one method of doing this easily. Once
-`pyenv` is installed, use it to install multiple versions of python:
-
+and 3.7. You can run your unit tests in all of these versions of python by:
 ```
-$ pyenv install 3.4.8
-$ pyenv install 3.5.5
-$ pyenv install 3.6.5
-$ pyenv install 3.7.0
-$ pyenv local 3.7.0 3.6.5 3.5.5 3.4.8
+$ invoke tox
 ```
-
-This will create a `.python-version` file and instruct the `pyenv` shims to make
-`python3.7`, `python3.6`, `python3.5`, and `python3.4` launch the appropriate
-versions of python.
-
-Once these executables are configured, invoking `tox` will create a virtual
-environment for each version of python, install the prerequisite packages, and
-run your unit tests.
 
 
 ### Run unit tests on multiple platforms
 
-AppVeyor and TravisCI offer free plans for open source projects.
-
-
-## Examples
-
-Include an example or two in the `examples` directory which demonstrate how your
-plugin works. This will help developers utilize it from within their
-application.
+[AppVeyor](https://github.com/marketplace/appveyor) and
+[TravisCI](https://docs.travis-ci.com/user/getting-started/) offer free plans
+for open source projects.
 
 
 ## Packaging and Distribution
@@ -235,8 +318,8 @@ When creating your `setup.py` file, keep the following in mind:
 
 - use the keywords `cmd2 plugin` to make it easier for people to find your plugin
 - since cmd2 uses semantic versioning, you should use something like
-  `install_requires=['cmd2 >= 0.9.3, <=2']` to make sure that your plugin
-  doesn't try and run with a future version of cmd2 with which it may not be
+  `install_requires=['cmd2 >= 0.9.4, <=2']` to make sure that your plugin
+  doesn't try and run with a future version of `cmd2` with which it may not be
   compatible
 
 
