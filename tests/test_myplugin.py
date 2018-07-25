@@ -12,7 +12,7 @@ import cmd2_myplugin
 #
 ######
 
-class MyApp(cmd2.Cmd, cmd2_myplugin.SayMixin):
+class MyApp(cmd2_myplugin.MyPlugin, cmd2.Cmd):
     """Simple subclass of cmd2.Cmd with our SayMixin plugin included."""
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -46,11 +46,11 @@ def test_say(capsys):
     # call our initialization function instead of using a fixture
     app = init_app()
     # run our mixed in command
-    app.onecmd_plus_hooks('say')
+    app.onecmd_plus_hooks('say hello')
     # use the capsys fixture to retrieve the output on stdout and stderr
     out, err = capsys.readouterr()
     # make our assertions
-    assert out == 'just ran the say command from a plugin\n'
+    assert out == 'in postparsing hook\nhello\n'
     assert not err
 
 def test_decorator(capsys):
@@ -61,5 +61,5 @@ def test_decorator(capsys):
     # use the capsys fixture to retrieve the output on stdout and stderr
     out, err = capsys.readouterr()
     # make our assertions
-    assert out == 'in the empty decorator\nrunning the empty command\n'
+    assert out == 'in postparsing hook\nin the empty decorator\nrunning the empty command\n'
     assert not err

@@ -1,7 +1,6 @@
 #
 # coding=utf-8
-
-import sys
+"""An example cmd2 plugin"""
 
 import functools
 from typing import Callable
@@ -18,7 +17,7 @@ def empty_decorator(func: Callable) -> Callable:
     return _empty_decorator
 
 
-class MyPlugin:
+class MyPluginMixin:
     """A mixin class which adds a 'say' command to a cmd2 subclass
 
     The order in which you add the mixin matters. Say you want to
@@ -52,7 +51,10 @@ class MyPlugin:
         """Method to be called after the command loop finishes"""
         self.poutput("postloop hook")
 
-    def cmd2_myplugin_postparsing_hook(self, data: cmd2.plugin.PostparsingData) -> cmd2.plugin.PostparsingData:
+    def cmd2_myplugin_postparsing_hook(
+            self,
+            data: cmd2.plugin.PostparsingData
+        ) -> cmd2.plugin.PostparsingData:
         """Method to be called after parsing user input, but before running the command"""
-        self.poutput('in postparsing_hook')
+        self.poutput('in postparsing hook')
         return data
